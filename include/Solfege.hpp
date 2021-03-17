@@ -12,12 +12,7 @@
 
 class SolfegeData {
 public:
-    std::string generated_data = "/* lol */\n"
-                                 "#include <stdio.h>\n"
-                                 "#include <stdlib.h>\n"
-                                 "\n\n"
-                                 "int main(int argc, char** argv) {\n"
-                                 "unsigned char* ptr = calloc(30000, 1);\n";
+    std::string generated_data;
 };
 
 class Solfege {
@@ -27,7 +22,7 @@ public:
 
     std::vector<std::string> Split(std::string data);
 
-    SolfegeData ReadSource(std::string file);
+    SolfegeData ReadSource(std::string file, bool is_brainfuck);
 };
 
 #endif // SOLFEGE_HPP

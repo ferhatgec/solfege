@@ -85,6 +85,8 @@ public:
     SolfegeTokens Tokenize(std::string re);
 
     void Codegen(SolfegeTokens re, SolfegeData &ti, std::string si);
+
+    void BrainfuckToSolfege(char re, SolfegeData &ti);
 };
 
 #endif // SOLFEGE_CODEGEN_HPP

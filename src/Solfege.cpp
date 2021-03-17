@@ -23,22 +23,40 @@ std::vector<std::string> Solfege::Split(std::string data) {
     return re;
 }
 
-SolfegeData Solfege::ReadSource(std::string file) {
+SolfegeData Solfege::ReadSource(std::string file, bool is_brainfuck) {
     std::ifstream sol(file);
     std::string   la;
 
     SolfegeCodegen si;
     SolfegeData    ra;
 
-    while(std::getline(sol, la)) {
-        tokens = Split(la);
+    if(!is_brainfuck) {
+        ra.generated_data =    "/* lol */\n"
+                               "#include <stdio.h>\n"
+                               "#include <stdlib.h>\n"
+                               "\n\n"
+                               "int main(int argc, char** argv) {\n"
+                               "unsigned char* ptr = calloc(30000, 1);\n";
 
-        for(unsigned i = 0; i < tokens.size(); i++) {
-            si.Codegen(si.Tokenize(tokens[i]), ra, tokens[i]);
+        while(std::getline(sol, la)) {
+            tokens = Split(la);
+
+            for(unsigned i = 0; i < tokens.size(); i++) {
+                si.Codegen(si.Tokenize(tokens[i]), ra, tokens[i]);
+            }
+        }
+    }
+    else {
+        while(std::getline(sol, la)) {
+            for(unsigned i = 0; i < la.length(); i++) {
+                si.BrainfuckToSolfege(la[i], ra);
+            }
         }
     }
 
-    ra.generated_data.append("}\n");
+    if(!is_brainfuck) {
+        ra.generated_data.append("}\n");
+    }
 
     return ra;
 }
@@ -50,17 +68,39 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    bool is_brainfuck = false;
     std::string re(argv[1]);
-    std::ofstream create(re + "_solfege.c", std::ofstream::trunc);
+    std::string generated_re;
+
+    std::cout << re << argc << "\n";
+
+    if(re == "--bf" && argc == 3) {
+        is_brainfuck = true;
+        re.erase();
+
+        re.append(argv[2]);
+    }
+
+    if(is_brainfuck) {
+        generated_re.append(re + "_lol.solfege");
+    }
+    else {
+        generated_re.append(re + "_solfege.c");
+    }
+
+    std::ofstream create(generated_re, std::ofstream::trunc);
 
     Solfege mi;
 
-    create << mi.ReadSource(re).generated_data;
+    create << mi.ReadSource(re, is_brainfuck).generated_data;
 
     create.close();
 
-    if(std::filesystem::exists(re + "_solfege.c")) {
-        system(std::string("cc " + re + "_solfege.c -o solfege_data && ./solfege_data && rm -f solfege_data").c_str());
+    if(!is_brainfuck) {
+        if (std::filesystem::exists(generated_re)) {
+            system(std::string("cc " + generated_re +
+            " -o solfege_data && ./solfege_data && rm -f solfege_data").c_str());
+        }
     }
 
     return 0;

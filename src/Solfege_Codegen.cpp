@@ -197,3 +197,55 @@ void SolfegeCodegen::Codegen(SolfegeTokens re, SolfegeData &ti, std::string si) 
         }
     }
 }
+
+void SolfegeCodegen::BrainfuckToSolfege(char re, SolfegeData &ti) {
+    switch(re) {
+        case '>': {
+            ti.generated_data.append("Do ");
+
+            break;
+        }
+        
+        case '<': {
+            ti.generated_data.append("Re ");
+
+            break;
+        }
+
+        case '+': {
+            ti.generated_data.append("Mi ");
+
+            break;
+        }
+
+        case '-': {
+            ti.generated_data.append("Fa ");
+
+            break;
+        }
+
+        case '.': {
+            ti.generated_data.append("Sol ");
+
+            break;
+        }
+
+        case ',': {
+            ti.generated_data.append("La");
+
+            break;
+        }
+
+        case '[': {
+            ti.generated_data.append("Ra Fa# Do# Sol# Mi#\n");
+
+            break;
+        }
+
+        case ']': {
+            ti.generated_data.append("Re# ");
+
+            break;
+        }
+    }
+}
