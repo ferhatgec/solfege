@@ -201,37 +201,37 @@ void SolfegeCodegen::Codegen(SolfegeTokens re, SolfegeData &ti, std::string si) 
 void SolfegeCodegen::BrainfuckToSolfege(char re, SolfegeData &ti) {
     switch(re) {
         case '>': {
-            ti.generated_data.append("Do ");
+            ti.generated_data.append("Do\n");
 
             break;
         }
         
         case '<': {
-            ti.generated_data.append("Re ");
+            ti.generated_data.append("Re\n");
 
             break;
         }
 
         case '+': {
-            ti.generated_data.append("Mi ");
+            ti.generated_data.append("Mi\n");
 
             break;
         }
 
         case '-': {
-            ti.generated_data.append("Fa ");
+            ti.generated_data.append("Fa\n");
 
             break;
         }
 
         case '.': {
-            ti.generated_data.append("Sol ");
+            ti.generated_data.append("Sol\n");
 
             break;
         }
 
         case ',': {
-            ti.generated_data.append("La");
+            ti.generated_data.append("La\n");
 
             break;
         }
@@ -243,7 +243,7 @@ void SolfegeCodegen::BrainfuckToSolfege(char re, SolfegeData &ti) {
         }
 
         case ']': {
-            ti.generated_data.append("Re# ");
+            ti.generated_data.append("Re#\n");
 
             break;
         }
